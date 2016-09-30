@@ -1,24 +1,21 @@
-﻿using MechsVsMinionsLibrary.util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace MechsVsMinionsLibrary.game
 {
-    public class Minion : IGameItem
+    public class BoardDisplayItem : IGameItem
     {
-        public Location Location { get; set; }
-
-        public void PlaceOnBoard(GameBoard board)
+        private char c;
+        public BoardDisplayItem(char c)
         {
-            if (board.GetGameItem(Location) == null)
-                board.Add(this, Location);
+            this.c = c;
         }
 
         public void DamageFromMech()
         {
-            GameBoard.getInstance().Remove(Location);
+            throw new NotImplementedException();
         }
 
         public void DamageFromMinion()
@@ -28,7 +25,7 @@ namespace MechsVsMinionsLibrary.game
 
         public override string ToString()
         {
-            return "M";
+            return c.ToString();
         }
     }
 }

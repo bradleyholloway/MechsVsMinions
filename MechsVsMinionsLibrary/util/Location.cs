@@ -36,14 +36,14 @@ namespace MechsVsMinionsLibrary.util
             }
             if (tile.Right > 0)
             {
-                for (int i = 0; i < tile.Forward; i++)
+                for (int i = 0; i < tile.Right; i++)
                 {
                     temp = temp.AdjacentDirection(mech.Direction + 2);
                 }
             }
-            else
+            else 
             {
-                for (int i = 0; i < -tile.Forward; i++)
+                for (int i = 0; i < -tile.Right; i++)
                 {
                     temp = temp.AdjacentDirection(mech.Direction + 6);
                 }

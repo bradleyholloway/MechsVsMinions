@@ -9,7 +9,7 @@ namespace MechsVsMinionsLibrary.game
 
     public class Deck
     {
-        private Random r = new Random(1234);
+        private Random r = new Random();
 
         public int ID { get; set; }
 

@@ -8,6 +8,49 @@ namespace MechsVsMinionsLibrary.game
 {
     public class ActionHandler
     {
+        private static List<Location> SelectNLocations(Mech mech, ICollection<Location> locations, int n = 1)
+        {
+            GameBoard displayBoard = new GameBoard();
+            mech.PlaceOnBoard(displayBoard);
+            for (int i = 0; i < locations.Count; i++)
+            {
+                displayBoard.Add(new BoardDisplayItem(i.ToString().ToCharArray()[0]), locations.ElementAt<Location>(i));
+            }
+            HashSet<int> selection = new HashSet<int>();
+            List<Location> final = new List<Location>();
+
+            while (selection.Count < n)
+            {
+                int index = displayBoard.DisplayWithPrompt("Input Selection: ");
+                while (index < 0 || index >= locations.Count || selection.Contains(index))
+                {
+                    index = displayBoard.DisplayWithPrompt("Input Selection: ");
+                }
+                selection.Add(index);
+                final.Add(locations.ElementAt<Location>(index));
+                displayBoard.Remove(locations.ElementAt<Location>(index));
+            }
+
+            return final;
+        }
+        private static int SelectDirection(Mech mech, List<int> directions)
+        {
+            GameBoard displayBoard = new GameBoard();
+            mech.PlaceOnBoard(displayBoard);
+            foreach (int dir in directions)
+            {
+                displayBoard.Add(new BoardDisplayItem(dir.ToString().ToCharArray()[0]), mech.Location.AdjacentDirection(mech.Direction + dir));
+            }
+
+            int direction = displayBoard.DisplayWithPrompt("Input Selection: ");
+            while (!directions.Contains(direction))
+            {
+                direction = displayBoard.DisplayWithPrompt("Input Selection: ");
+            }
+
+            return direction;
+        }
+
         private static void ExecuteAction(Mech mech, TurnAction action)
         {
             GameBoard board = GameBoard.getInstance();
@@ -35,20 +78,11 @@ namespace MechsVsMinionsLibrary.game
                 }
                 else
                 {
+                    List<Location> selection = SelectNLocations(mech, targets, action.Count);
                     // TODO: Prompt user for action.Count locations to kill.
-                    for (int i = 0; targets.Count > 0 && i < action.Count; i++)
+                    foreach (Location hit in selection)
                     {
-                        Location l = targets.First();
-                        targets.Remove(l);
-                        IGameItem gameItem = board.GetGameItem(l);
-                        if (gameItem != null)
-                        {
-                            gameItem.DamageFromMech();
-                        }
-                        else
-                        {
-                            i--;
-                        }
+                        board.GetGameItem(hit).DamageFromMech();
                     }
                 }
             }
@@ -64,7 +98,7 @@ namespace MechsVsMinionsLibrary.game
                 else if (action.Directions.Count > 1)
                 {
                     // TODO: Prompt User input of direction
-                    direction += action.Directions.First();
+                    direction += SelectDirection(mech, action.Directions);
                 }
 
 
@@ -87,7 +121,7 @@ namespace MechsVsMinionsLibrary.game
             {
                 if (action.Tiles.Count == 1)
                 {
-                    Location temp = Location.LocationWithTileOffset(mech, action.Tiles.First());
+                    Location temp = Location.MovementWithTileOffset(mech, action.Tiles.First(), board);
                     if (board.GetTerrain(temp) != null && board.GetGameItem(temp) == null)
                     {
                         board.Remove(mech.Location);
@@ -103,7 +137,7 @@ namespace MechsVsMinionsLibrary.game
                         targets.Add(Location.MovementWithTileOffset(mech, tile, board));
                     }
                     // TODO: Select movement target from targets. (choose 1)
-                    Location temp = targets.First();
+                    Location temp = SelectNLocations(mech, targets).First();
 
                     board.Remove(mech.Location);
                     mech.Location = temp;
@@ -119,7 +153,7 @@ namespace MechsVsMinionsLibrary.game
                 else if (action.Directions.Count > 1)
                 {
                     // TODO: Prompt user input of directions
-                    mech.Direction += action.Directions.First();
+                    mech.Direction += SelectDirection(mech, action.Directions);
                 }
             }
         }

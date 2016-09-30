@@ -8,6 +8,7 @@ using MechsVsMinionsLibrary.game;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using MechsVsMinionsLibrary.util;
 
 namespace MechsVsMinions
 {
@@ -72,12 +73,35 @@ namespace MechsVsMinions
             player.ActionBar.Cards.ElementAt<CardStack>(1).AddCard(test.RandomCard);
             player.ActionBar.Cards.ElementAt<CardStack>(3).AddCard(test.RandomCard);
 
-            
 
+            Random r = new Random();
             Console.WriteLine(board);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 50; i++)
             {
+                player.ActionBar.Cards.ElementAt(r.Next(6)).AddCard(test.RandomCard);
                 player.Execute();
+
+                //minion move
+                int dir = r.Next(4) * 2;
+                board.MoveMinions(dir);
+
+                Console.WriteLine("Minions Spawning");
+                //minion spawn
+                
+
+                for (int j = 0; j < 3; j ++)
+                {
+                    Minion m = new Minion()
+                    {
+                        Location = new Location(r.Next(5), r.Next(5))
+                    };
+                    m.PlaceOnBoard(board);
+                }
+                board.Display();
+
+                //minion attack
+
+
             }
 
             Console.WriteLine(test);

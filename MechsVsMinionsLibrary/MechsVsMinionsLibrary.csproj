@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="game\ActionBar.cs" />
     <Compile Include="game\ActionHandler.cs" />
+    <Compile Include="game\BoardDisplayItem.cs" />
     <Compile Include="game\Card.cs" />
     <Compile Include="game\CardStack.cs" />
     <Compile Include="game\Deck.cs" />

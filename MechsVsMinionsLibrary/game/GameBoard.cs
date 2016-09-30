@@ -16,10 +16,13 @@ namespace MechsVsMinionsLibrary.game
 
         private ITerrain[,] boardTerrain;
 
-        private GameBoard()
+        private IList<Minion> minions;
+
+        public GameBoard()
         {
             boardItems = new IGameItem[5, 5];
             boardTerrain = new ITerrain[5, 5];
+            minions = new List<Minion>();
 
             for (int i = 0; i < boardTerrain.GetLength(0); i++)
             {
@@ -30,18 +33,47 @@ namespace MechsVsMinionsLibrary.game
             }
         }
 
+        public void MoveMinions(int direction)
+        {
+            List<Minion> tempMinions = minions.ToList();
+            foreach (Minion m in tempMinions)
+            {
+
+                m.Location = m.Location.AdjacentDirection(direction);
+                if (GetTerrain(m.Location) != null && GetGameItem(m.Location) == null)
+                {
+                    Remove(m.Location.AdjacentDirection(direction + 4));
+                    Add(m, m.Location);
+                }
+            }
+        }
+
         public void Remove(Location l)
         {
+            if (l.X < 0 || l.X >= boardTerrain.GetLength(0) || l.Y < 0 || l.Y >= boardTerrain.GetLength(1))
+                return;
+            if (boardItems[l.X, l.Y] is Minion)
+            {
+                minions.Remove((Minion)boardItems[l.X, l.Y]);
+            }
             boardItems[l.X, l.Y] = null;
         }
 
         public void Add(IGameItem gameItem, Location l)
         {
+            if (gameItem is Minion)
+            {
+                minions.Add((Minion)gameItem);
+            }
+
+            if (l.X < 0 || l.X >= boardTerrain.GetLength(0) || l.Y < 0 || l.Y >= boardTerrain.GetLength(1))
+                return;
             boardItems[l.X, l.Y] = gameItem;
         }
 
         public IGameItem GetGameItem(Location l)
         {
+
             if (l.X < 0 || l.X >= boardTerrain.GetLength(0) || l.Y < 0 || l.Y >= boardTerrain.GetLength(1))
                 return null;
             return boardItems[l.X, l.Y];
@@ -69,18 +101,30 @@ namespace MechsVsMinionsLibrary.game
             Console.WriteLine(this);
             Console.ReadLine();
         }
+        public int DisplayWithPrompt(string prompt)
+        {
+            Console.WriteLine(this);
+            Console.Write(prompt);
+            int responce;
+            while (!int.TryParse(Console.ReadLine(), out responce))
+            {
+                Console.WriteLine(this);
+                Console.Write(prompt);
+            }
+            return responce;
+        }
 
         public override string ToString()
         {
             StringBuilder board = new StringBuilder();
 
             board.Append("\n/");
-            for (int j = 0; j < boardTerrain.GetLength(0)-1; j++)
+            for (int j = 0; j < boardTerrain.GetLength(0) - 1; j++)
             {
                 board.Append("===+");
             }
             board.Append("===\\");
-            
+
             for (int i = 0; i < boardTerrain.GetLength(1) - 1; i++)
             {
                 board.Append("\n| ");
@@ -89,7 +133,7 @@ namespace MechsVsMinionsLibrary.game
                     board.Append(GetDisplayChar(j, i));
                     board.Append(" | ");
                 }
-                board.Append(GetDisplayChar(boardItems.GetLength(0)-1, i));
+                board.Append(GetDisplayChar(boardItems.GetLength(0) - 1, i));
                 board.Append(" |");
 
                 board.Append("\n+");
