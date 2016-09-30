@@ -10,7 +10,7 @@ namespace MechsVsMinions
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (MechsVsMinions game = new MechsVsMinions())
             {
                 game.Run();
             }

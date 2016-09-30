@@ -1,25 +1,27 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
+using System.Xml.Linq;
+using MechsVsMinionsLibrary.game;
+using System.IO;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace MechsVsMinions
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class MechsVsMinions : Microsoft.Xna.Framework.Game
     {
+
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Game1()
+        public MechsVsMinions()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -47,7 +49,40 @@ namespace MechsVsMinions
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            const string path = @"core_deck.xml";
+            var curPath = Directory.GetCurrentDirectory();
+            Log(curPath);
+            StreamReader reader = new StreamReader(path, Encoding.UTF8);
+            XmlSerializer xs = new XmlSerializer(typeof(Deck));
+            Deck test = (Deck)xs.Deserialize(reader);
+
+            GameBoard.loadBoard("file");
+            Mech player = new Mech()
+            {
+                Location = new MechsVsMinionsLibrary.util.Location(0, 0),
+                Direction = 0
+            };
+            GameBoard board = GameBoard.getInstance();
+            player.PlaceOnBoard(board);
+
+
+
+            player.ActionBar.Cards.ElementAt<CardStack>(2).AddCard(test.RandomCard);
+            player.ActionBar.Cards.ElementAt<CardStack>(3).AddCard(test.RandomCard);
+            player.ActionBar.Cards.ElementAt<CardStack>(1).AddCard(test.RandomCard);
+            player.ActionBar.Cards.ElementAt<CardStack>(3).AddCard(test.RandomCard);
+
+            
+
+            Console.WriteLine(board);
+            for (int i = 0; i < 10; i++)
+            {
+                player.Execute();
+            }
+
+            Console.WriteLine(test);
+
+            this.Exit();
         }
 
         /// <summary>
@@ -81,11 +116,24 @@ namespace MechsVsMinions
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        public static void Log(string logMessage)
+        {
+            using (StreamWriter w = File.AppendText("log.txt"))
+            {
+                w.Write("\r\nLog Entry : ");
+                w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
+                    DateTime.Now.ToLongDateString());
+                w.WriteLine("  :");
+                w.WriteLine("  :{0}", logMessage);
+                w.WriteLine("-------------------------------");
+            }
         }
     }
 }
