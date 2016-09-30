@@ -66,19 +66,22 @@ namespace MechsVsMinions
             GameBoard board = GameBoard.getInstance();
             player.PlaceOnBoard(board);
 
-
-
+            Console.WriteLine("Hi Brandon!");
+            /*
             player.ActionBar.Cards.ElementAt<CardStack>(2).AddCard(test.RandomCard);
             player.ActionBar.Cards.ElementAt<CardStack>(3).AddCard(test.RandomCard);
             player.ActionBar.Cards.ElementAt<CardStack>(1).AddCard(test.RandomCard);
             player.ActionBar.Cards.ElementAt<CardStack>(3).AddCard(test.RandomCard);
-
+            */
 
             Random r = new Random();
             Console.WriteLine(board);
             for (int i = 0; i < 50; i++)
             {
+
                 player.ActionBar.Cards.ElementAt(r.Next(6)).AddCard(test.RandomCard);
+
+                //player execute
                 player.Execute();
 
                 //minion move

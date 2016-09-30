@@ -23,5 +23,22 @@ namespace MechsVsMinionsLibrary.game
 
         [XmlArray("Eff3"), XmlArrayItem("TurnAction", Type = typeof(TurnAction))]
         public List<TurnAction> Eff3 { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder card = new StringBuilder();
+            card.Append("Name: ");
+            card.Append(Name);
+            card.Append("\nColor: ");
+            card.Append(Color);
+            card.Append("\n * ");
+            card.Append(Desc1);
+            card.Append("\n** ");
+            card.Append(Desc2);
+            card.Append("\n***");
+            card.Append(Desc3);
+            card.Append("\n");
+            return card.ToString();
+        }
     }
 }
