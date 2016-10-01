@@ -11,12 +11,14 @@ namespace MechsVsMinionsLibrary.game
         public Mech()
         {
             this.ActionBar = new game.ActionBar();
+            this.Health = 5;
         }
 
         public ActionBar ActionBar { get; set; }
 
         public Location Location { get; set; }
         public int Direction { get; set; }
+        public int Health { get; set; }
 
         public void Execute()
         {

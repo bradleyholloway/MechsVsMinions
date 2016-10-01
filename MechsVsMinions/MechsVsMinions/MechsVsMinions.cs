@@ -9,6 +9,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using MechsVsMinionsLibrary.util;
+using System.Collections.Generic;
 
 namespace MechsVsMinions
 {
@@ -66,7 +67,6 @@ namespace MechsVsMinions
             GameBoard board = GameBoard.getInstance();
             player.PlaceOnBoard(board);
 
-            Console.WriteLine("Hi Brandon!");
             /*
             player.ActionBar.Cards.ElementAt<CardStack>(2).AddCard(test.RandomCard);
             player.ActionBar.Cards.ElementAt<CardStack>(3).AddCard(test.RandomCard);
@@ -76,10 +76,25 @@ namespace MechsVsMinions
 
             Random r = new Random();
             Console.WriteLine(board);
-            for (int i = 0; i < 50; i++)
+            while (player.Health > 0)
             {
+                Console.WriteLine("Score: " + Minion.Kills);
+                Console.WriteLine("Health: " + player.Health);
 
-                player.ActionBar.Cards.ElementAt(r.Next(6)).AddCard(test.RandomCard);
+                Card cardDraw = test.RandomCard;
+                Console.WriteLine("You drew a card: ");
+                Console.WriteLine(cardDraw);
+
+                Console.WriteLine("Current Command Line:");
+                Console.WriteLine(player.ActionBar);
+
+                Console.Write("Place on stack: ");
+                int stack = -1;
+                while (!int.TryParse(Console.ReadLine(), out stack) || stack < 0 || stack > 5)
+                {
+                    Console.Write("Place on stack: ");
+                }
+                player.ActionBar.Cards.ElementAt(stack).AddCard(cardDraw);
 
                 //player execute
                 player.Execute();
@@ -103,12 +118,27 @@ namespace MechsVsMinions
                 board.Display();
 
                 //minion attack
-
+                HashSet<Location> adjacent = new HashSet<Location>();
+                adjacent.Add(player.Location.AdjacentDirection(0));
+                adjacent.Add(player.Location.AdjacentDirection(2));
+                adjacent.Add(player.Location.AdjacentDirection(4));
+                adjacent.Add(player.Location.AdjacentDirection(6));
+                foreach (Location spot in adjacent)
+                {
+                    if (board.GetGameItem(spot) != null)
+                    {
+                        if (board.GetGameItem(spot) is Minion)
+                        {
+                            player.Health--;
+                        }
+                    }
+                }
 
             }
 
-            Console.WriteLine(test);
-
+            Console.WriteLine("Final Score: " + Minion.Kills);
+            while (true)
+                Console.ReadLine();
             this.Exit();
         }
 

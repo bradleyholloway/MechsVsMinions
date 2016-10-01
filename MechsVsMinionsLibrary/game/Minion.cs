@@ -8,6 +8,7 @@ namespace MechsVsMinionsLibrary.game
 {
     public class Minion : IGameItem
     {
+        public static int Kills = 0;
         public Location Location { get; set; }
 
         public void PlaceOnBoard(GameBoard board)
@@ -18,6 +19,7 @@ namespace MechsVsMinionsLibrary.game
 
         public void DamageFromMech()
         {
+            Kills++;
             GameBoard.getInstance().Remove(Location);
         }
 
