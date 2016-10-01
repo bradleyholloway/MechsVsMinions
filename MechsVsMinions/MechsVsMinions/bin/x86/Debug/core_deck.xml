@@ -515,72 +515,57 @@
 			<Desc3>Moves 3 tiles forwards or to either side.</Desc3>
 			<Eff1>
 				<TurnAction>
-					<Type>Kill</Type>
-					<Tiles>
-						<Tile>
-							<Forward>1</Forward>
-							<Right>0</Right>
-						</Tile>
-					</Tiles>
-				</TurnAction>
-				<TurnAction>
 					<Type>Move</Type>
 					<Tiles>
 						<Tile>
 							<Forward>1</Forward>
 							<Right>0</Right>
+						</Tile>
+						<Tile>
+							<Forward>0</Forward>
+							<Right>-1</Right>
+						</Tile>
+						<Tile>
+							<Forward>0</Forward>
+							<Right>1</Right>
 						</Tile>
 					</Tiles>
 				</TurnAction>
 			</Eff1>
 			<Eff2>
 				<TurnAction>
-					<Type>Kill</Type>
-					<Tiles>
-						<Tile>
-							<Forward>1</Forward>
-							<Right>0</Right>
-						</Tile>
-						<Tile>
-							<Forward>2</Forward>
-							<Right>0</Right>
-						</Tile>
-					</Tiles>
-				</TurnAction>
-				<TurnAction>
 					<Type>Move</Type>
 					<Tiles>
 						<Tile>
 							<Forward>2</Forward>
 							<Right>0</Right>
+						</Tile>
+						<Tile>
+							<Forward>0</Forward>
+							<Right>-2</Right>
+						</Tile>
+						<Tile>
+							<Forward>0</Forward>
+							<Right>2</Right>
 						</Tile>
 					</Tiles>
 				</TurnAction>
 			</Eff2>
 			<Eff3>
 				<TurnAction>
-					<Type>Kill</Type>
-					<Tiles>
-						<Tile>
-							<Forward>1</Forward>
-							<Right>0</Right>
-						</Tile>
-						<Tile>
-							<Forward>2</Forward>
-							<Right>0</Right>
-						</Tile>
-						<Tile>
-							<Forward>3</Forward>
-							<Right>0</Right>
-						</Tile>
-					</Tiles>
-				</TurnAction>
-				<TurnAction>
 					<Type>Move</Type>
 					<Tiles>
 						<Tile>
 							<Forward>3</Forward>
 							<Right>0</Right>
+						</Tile>
+						<Tile>
+							<Forward>0</Forward>
+							<Right>-3</Right>
+						</Tile>
+						<Tile>
+							<Forward>0</Forward>
+							<Right>3</Right>
 						</Tile>
 					</Tiles>
 				</TurnAction>
