@@ -182,6 +182,7 @@ namespace MechsVsMinions
 
         public static void Log(string logMessage)
         {
+            /*
             using (StreamWriter w = File.AppendText("log.txt"))
             {
                 w.Write("\r\nLog Entry : ");
@@ -191,6 +192,7 @@ namespace MechsVsMinions
                 w.WriteLine("  :{0}", logMessage);
                 w.WriteLine("-------------------------------");
             }
+            */
         }
     }
 }
